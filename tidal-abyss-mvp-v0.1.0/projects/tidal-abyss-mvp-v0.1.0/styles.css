@@ -1,0 +1,349 @@
+:root {
+  color-scheme: dark;
+  font-family: "Courier New", ui-monospace, Menlo, Monaco, Consolas, monospace;
+  background: #11141d;
+  color: #fff0c2;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  overflow: hidden;
+}
+
+button {
+  font: inherit;
+}
+
+img,
+canvas {
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+}
+
+.game-shell {
+  position: relative;
+  display: grid;
+  grid-template-rows: minmax(0, 1fr) auto;
+  width: 100vw;
+  height: 100vh;
+  min-width: 320px;
+  min-height: 520px;
+  overflow: hidden;
+  background: #11141d;
+}
+
+.game-shell:not(.game-active) {
+  grid-template-rows: minmax(0, 1fr);
+}
+
+#game {
+  display: block;
+  grid-row: 1;
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+}
+
+.hud {
+  position: relative;
+  z-index: 2;
+  grid-row: 2;
+  display: grid;
+  grid-template-columns: minmax(260px, 1fr) minmax(240px, 320px) minmax(240px, 360px);
+  gap: 8px;
+  padding: 8px;
+  pointer-events: auto;
+  background: #0b0e18;
+  box-shadow: 0 -4px 0 #15101b;
+}
+
+.game-shell:not(.game-active) .hud {
+  display: none;
+}
+
+.topbar,
+.meters,
+.message {
+  border: 1px solid rgba(244, 230, 187, 0.18);
+  border-radius: 2px;
+  background: rgba(27, 31, 44, 0.86);
+  box-shadow:
+    0 0 0 2px rgba(25, 16, 26, 0.95),
+    0 8px 0 rgba(0, 0, 0, 0.28);
+  backdrop-filter: none;
+}
+
+.topbar {
+  grid-column: 1;
+  grid-row: 1;
+  display: grid;
+  grid-template-columns: auto auto auto;
+  align-items: center;
+  gap: 12px;
+  min-height: 46px;
+  padding: 8px 12px;
+}
+
+.hero-portrait {
+  width: 42px;
+  height: 42px;
+  overflow: hidden;
+  border: 2px solid #d5a34a;
+  border-radius: 2px;
+  background: #ff00ff;
+  box-shadow: inset 0 0 0 2px #1a1421;
+}
+
+.hero-portrait img {
+  width: 100%;
+  height: 100%;
+  width: 190px;
+  height: 126px;
+  object-fit: none;
+  object-position: 7% 8%;
+  transform: scale(0.54);
+  transform-origin: 0 0;
+}
+
+.brand,
+.region-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  min-height: 30px;
+  color: #fff0c2;
+  font-size: 14px;
+  font-weight: 900;
+  letter-spacing: 0;
+}
+
+.brand-mark {
+  width: 19px;
+  height: 19px;
+  border: 2px solid #d5a34a;
+  border-radius: 2px;
+  background:
+    linear-gradient(90deg, transparent 42%, #d5a34a 42%, #d5a34a 58%, transparent 58%),
+    linear-gradient(0deg, transparent 42%, #d5a34a 42%, #d5a34a 58%, transparent 58%),
+    #286b7a;
+  box-shadow: 0 0 0 2px #15101b;
+}
+
+.region-pill {
+  justify-content: center;
+  min-width: 74px;
+  padding: 0 10px;
+  border: 2px solid #3fa6b6;
+  border-radius: 2px;
+  color: #a8f3ff;
+  background: #143848;
+}
+
+.objective {
+  grid-column: 1 / -1;
+  min-width: 0;
+  overflow: hidden;
+  color: #fff0c2;
+  font-size: 14px;
+  font-weight: 750;
+  text-align: left;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.meters {
+  grid-column: 2;
+  grid-row: 1;
+  display: grid;
+  gap: 8px;
+  padding: 10px;
+}
+
+.meter {
+  position: relative;
+  height: 18px;
+  overflow: hidden;
+  border: 2px solid #2b2332;
+  border-radius: 2px;
+  background: #0b1322;
+}
+
+.meter span {
+  position: absolute;
+  z-index: 1;
+  left: 9px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #fff0c2;
+  font-size: 11px;
+  font-weight: 900;
+  letter-spacing: 0;
+}
+
+.meter i {
+  display: block;
+  width: 100%;
+  height: 100%;
+  transform-origin: left center;
+  background: linear-gradient(90deg, #3fa6b6, #8ac65a);
+  transition: transform 120ms linear;
+}
+
+.meter.hazard i {
+  background: linear-gradient(90deg, #d5a34a, #c14d4d);
+}
+
+.message {
+  grid-column: 3;
+  grid-row: 1;
+  min-height: 46px;
+  padding: 12px;
+  color: #fff0c2;
+  font-size: 14px;
+  font-weight: 760;
+}
+
+.start-overlay,
+.end-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  display: grid;
+  place-items: center;
+  padding: 28px;
+  background:
+    linear-gradient(180deg, rgba(10, 15, 24, 0.28), rgba(8, 8, 15, 0.76)),
+    url("assets/tidal-abyss-mvp-v0.1.0-shore-map.jpg") center / cover;
+  backdrop-filter: none;
+}
+
+.end-overlay {
+  background:
+    linear-gradient(180deg, rgba(8, 14, 28, 0.22), rgba(2, 7, 16, 0.74)),
+    url("assets/tidal-abyss-mvp-v0.1.0-abyss-map.jpg") center / cover;
+}
+
+.hidden {
+  display: none;
+}
+
+.start-character {
+  position: absolute;
+  right: max(28px, 7vw);
+  bottom: max(28px, 9vh);
+  width: min(32vw, 420px);
+  aspect-ratio: 1;
+  border: 4px solid #d5a34a;
+  background:
+    url("assets/tidal-abyss-mvp-v0.1.0-hero-sheet.png") 2% 0% / 360% auto no-repeat,
+    #10182a;
+  box-shadow:
+    0 0 0 4px #15101b,
+    12px 12px 0 rgba(0, 0, 0, 0.34);
+  opacity: 0.98;
+  pointer-events: none;
+}
+
+.title-lockup {
+  position: relative;
+  z-index: 1;
+  width: min(720px, 92vw);
+  text-align: center;
+}
+
+.title-lockup p {
+  margin: 0 0 12px;
+  color: #a8f3ff;
+  font-size: 18px;
+  font-weight: 900;
+  letter-spacing: 0;
+}
+
+.title-lockup h1 {
+  margin: 0;
+  color: #fff0c2;
+  font-size: 82px;
+  line-height: 1;
+  letter-spacing: 0;
+  text-shadow:
+    4px 0 #15101b,
+    0 4px #15101b,
+    -4px 0 #15101b,
+    0 -4px #15101b,
+    8px 8px 0 rgba(0, 0, 0, 0.35);
+}
+
+.title-lockup button {
+  min-width: 128px;
+  min-height: 44px;
+  margin-top: 28px;
+  border: 3px solid #15101b;
+  border-radius: 2px;
+  background: #ffd05f;
+  color: #15101b;
+  font-weight: 950;
+  cursor: pointer;
+  box-shadow:
+    6px 6px 0 rgba(0, 0, 0, 0.34),
+    inset 0 -4px 0 #b96d3a;
+}
+
+.title-lockup button:focus-visible {
+  outline: 3px solid #a8f3ff;
+  outline-offset: 4px;
+}
+
+@media (max-width: 860px) {
+  .game-shell {
+    grid-template-rows: minmax(0, 1fr) auto;
+  }
+
+  .game-shell:not(.game-active) {
+    grid-template-rows: minmax(0, 1fr);
+  }
+
+  .hud {
+    grid-template-columns: 1fr;
+    padding: 6px;
+  }
+
+  .topbar {
+    grid-column: 1;
+    grid-row: auto;
+    grid-template-columns: auto auto;
+  }
+
+  .hero-portrait {
+    display: none;
+  }
+
+  .objective {
+    grid-column: 1 / -1;
+    text-align: left;
+    white-space: normal;
+  }
+
+  .meters,
+  .message {
+    grid-column: 1;
+    grid-row: auto;
+  }
+
+  .title-lockup h1 {
+    font-size: 48px;
+  }
+
+  .start-character {
+    right: 18px;
+    bottom: 26px;
+    width: 176px;
+    opacity: 0.42;
+  }
+}

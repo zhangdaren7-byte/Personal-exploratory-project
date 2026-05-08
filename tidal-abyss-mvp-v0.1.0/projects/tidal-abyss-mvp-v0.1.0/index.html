@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>潮渊：岸与深海 MVP</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main class="game-shell" id="gameShell">
+      <canvas id="game" aria-label="潮渊：岸与深海 MVP"></canvas>
+
+      <section class="hud" aria-label="游戏状态">
+        <div class="topbar">
+          <div class="hero-portrait">
+            <img src="assets/tidal-abyss-mvp-v0.1.0-hero-sheet.png" alt="" />
+          </div>
+          <div class="brand">
+            <span class="brand-mark"></span>
+            <span>潮渊</span>
+          </div>
+          <div class="region-pill" id="regionLabel">岸上</div>
+          <div class="objective" id="objectiveLabel">采集陆矿与浅海藻类</div>
+        </div>
+
+        <div class="meters">
+          <div class="meter">
+            <span>氧气</span>
+            <i id="oxygenFill"></i>
+          </div>
+          <div class="meter hazard">
+            <span>深压/寒流</span>
+            <i id="hazardFill"></i>
+          </div>
+        </div>
+
+        <div class="message" id="messageBox">潮声很近。</div>
+      </section>
+
+      <section class="start-overlay" id="startOverlay">
+        <div class="start-character" aria-hidden="true"></div>
+        <div class="title-lockup">
+          <p>岸上与深海互相塑造</p>
+          <h1>潮渊 MVP</h1>
+          <button id="startButton" type="button">开始</button>
+        </div>
+      </section>
+
+      <section class="end-overlay hidden" id="endOverlay">
+        <div class="title-lockup">
+          <p id="endKicker">黑石门开启</p>
+          <h1 id="endTitle">陆海回路完成</h1>
+          <button id="restartButton" type="button">重来</button>
+        </div>
+      </section>
+    </main>
+
+    <script src="game.js"></script>
+  </body>
+</html>
